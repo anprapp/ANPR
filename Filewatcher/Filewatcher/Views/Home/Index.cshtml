@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row" id="gallery">
+    <div class="col-lg-3 col-md-3 col-sm-12" style="margin-top:95px;">
+        <div class="row">
+            <div class="col-lg-5 text-right"><span>Number : </span></div>
+            <div class="col-lg-7 text-left"><span id="Number"></span></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-5 text-right"><span>Make : </span></div>
+            <div class="col-lg-7 text-left"><span id="Make"></span></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-5 text-right""><span>Model : </span></div>
+            <div class="col-lg-7 text-left"><span id="Model"></span></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-5 text-right"><span>Color : </span></div>
+            <div class="col-lg-7 text-left"><span id="Color"></span></div>
+        </div>
+    </div>    
+    <div  class="col-lg-6 col-md-6 col-sm-12" style="margin-top:0px;">
+        <div class="row" style="justify-content: center;font-size: 4rem;">
+            <span id="vechileNumber"></span>
+        </div>
+        <img class="imgVechile" id="priImage" />
+    </div>    
+    <div class="col-lg-3 col-md-3 col-sm-12" style="margin-top:95px;" id="previous">
+        <div id="previous0" style="display:none">
+            <span></span>
+        </div>
+        <div id="previous1" style="display:none">
+            <span></span>
+        </div>
+        <div id="previous2" style="display:none">
+            <span></span>
+        </div>
+        <div id="previous3" style="display:none">
+            <span></span>
+        </div>
+        <div id="previous4" style="display:none">
+            <span></span>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script>
+            //objectVechicle.Make = "BMW";
+            //objectVechicle.Model = "Z4";
+            //objectVechicle.Color = "Gray";
+            //objectVechicle.Year = "2018";
+            //objectVechicle.Alerts = "New Car";
+            //objectVechicle.imgPath = imagePath;
+            //objectVechicle.imgName = Path.GetFileName(imagePath);
+        var BaseURL = '@Url.Content("~/")';
+        $().ready(function () {
+
+            var GalleryHub = $.connection.galleryHub;
+            GalleryHub.client.LoadGallery = function (data) {
+                if (data.imgPath) {
+                    $("#priImage").attr({ "src": BaseURL + "home/getimages/?filename=" + data.imgPath, "class": "imgVechile" });
+                    $("#vechileNumber").text(data.Number);
+                    $("#Number").text(data.Number);
+                    $("#Make").text(data.Make);
+                    $("#Model").text(data.Model);
+                }
+           
+
+                if (data.previous && data.previous.length > 0) {
+                    $.each(data.previous, function (index, value) {
+                        $("#previous" + index).show();
+                        $("#previous" + index + '> span').text(value.Number);
+                    });
+                }
+            };
+            //$.each(data, function (index, value) {
+            //$("<div/>").addClass("col-lg-3 col-md-3 col-sm-4 col-6").append($("<img />").attr({ "src": BaseURL + "home/getimages/?filename=" + data.imgPath, "class": "imgVechile" })).appendTo("#gallery");
+            //    });
+            $.connection.hub.start().done(function () {
+                GalleryHub.server.getImagesList();
+            });
+
+        });
+    </script>
+}
