@@ -13,12 +13,16 @@
             <div class="col-lg-7 text-left"><span id="Make"></span></div>
         </div>
         <div class="row">
-            <div class="col-lg-5 text-right""><span>Model : </span></div>
+            <div class="col-lg-5 text-right" "><span>Model : </span></div>
             <div class="col-lg-7 text-left"><span id="Model"></span></div>
         </div>
         <div class="row">
             <div class="col-lg-5 text-right"><span>Color : </span></div>
             <div class="col-lg-7 text-left"><span id="Color"></span></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-5 text-right"><span>Year : </span></div>
+            <div class="col-lg-7 text-left"><span id="Year"></span></div>
         </div>
     </div>    
     <div  class="col-lg-6 col-md-6 col-sm-12" style="margin-top:0px;">
@@ -51,13 +55,6 @@
     <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
     <script src="~/signalr/hubs"></script>
     <script>
-            //objectVechicle.Make = "BMW";
-            //objectVechicle.Model = "Z4";
-            //objectVechicle.Color = "Gray";
-            //objectVechicle.Year = "2018";
-            //objectVechicle.Alerts = "New Car";
-            //objectVechicle.imgPath = imagePath;
-            //objectVechicle.imgName = Path.GetFileName(imagePath);
         var BaseURL = '@Url.Content("~/")';
         $().ready(function () {
 
@@ -69,6 +66,8 @@
                     $("#Number").text(data.Number);
                     $("#Make").text(data.Make);
                     $("#Model").text(data.Model);
+                    $("#Color").text(data.Color);
+                    $("#Year").text(data.Year);
                 }
            
 

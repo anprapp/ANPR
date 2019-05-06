@@ -67,21 +67,28 @@ namespace Filewatcher
                         imgName = objectVechicle.imgName,
                     });
                 }
-                foreach (JProperty app in jsonResult)
+                if (jsonResult.results != null && jsonResult.results != null && ((Newtonsoft.Json.Linq.JContainer)jsonResult.results).Count >0 && jsonResult.results[0].plate != null)
                 {
-                    if (app.Name == "results")
-                    {
-                        objectVechicle.Number = app.Value[0]["plate"].ToString();
-                    }
+                    objectVechicle.Number = jsonResult.results[0].plate.ToString();
+                    objectVechicle.Color = jsonResult.results[0].vehicle.color[0].name.ToString();
+                    objectVechicle.Make = jsonResult.results[0].vehicle.make[0].name.ToString();
+                    objectVechicle.Model = jsonResult.results[0].vehicle.body_type[0].name.ToString();
+                    objectVechicle.Year = jsonResult.results[0].vehicle.year[0].name.ToString();
+                    objectVechicle.Alerts = "New Car";
+                    objectVechicle.imgPath = imagePath;
+                    objectVechicle.imgName = Path.GetFileName(imagePath);
                 }
-
-                objectVechicle.Make = "BMW";
-                objectVechicle.Model = "Z4";
-                objectVechicle.Color = "Gray";
-                objectVechicle.Year = "2018";
-                objectVechicle.Alerts = "New Car";
-                objectVechicle.imgPath = imagePath;
-                objectVechicle.imgName = Path.GetFileName(imagePath);
+                else
+                {
+                    objectVechicle.Number = "Not Found";
+                    objectVechicle.Make = "UNKNOWN";
+                    objectVechicle.Model = "UNKNOWN";
+                    objectVechicle.Color = "UNKNOWN";
+                    objectVechicle.Year = "UNKNOWN";
+                    objectVechicle.Alerts = "New Car";
+                    objectVechicle.imgPath = imagePath;
+                    objectVechicle.imgName = Path.GetFileName(imagePath);
+                }
             }
             catch (Exception ex) { var aa = ex; };
         }
